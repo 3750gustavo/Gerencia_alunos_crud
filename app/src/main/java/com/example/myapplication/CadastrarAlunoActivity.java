@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -20,7 +19,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.Locale;
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -86,10 +88,16 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
                     // Insert payment if provided
                     if (!editTextValorPagamento.getText().toString().isEmpty() && !editTextDataPagamento.getText().toString().isEmpty()) {
                         double valor = Double.parseDouble(editTextValorPagamento.getText().toString());
-                        Date data = new Date(editTextDataPagamento.getText().toString());
-                        Pagamento pagamento = new Pagamento((int) id, valor, data);
-                        PagamentoDao pagamentoDao = new PagamentoDao(CadastrarAlunoActivity.this);
-                        pagamentoDao.inserir(pagamento);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR"));
+                        try {
+                            Date data = simpleDateFormat.parse(editTextDataPagamento.getText().toString());
+                            Pagamento pagamento = new Pagamento((int) id, valor, data);
+                            PagamentoDao pagamentoDao = new PagamentoDao(CadastrarAlunoActivity.this);
+                            pagamentoDao.inserir(pagamento);
+                        } catch (ParseException e) {
+                            // Handle the exception, e.g., log the error or display a toast message
+                            android.util.Log.e("DATE_PARSING_ERROR", "Error parsing date", e);
+                        }
                     }
                 }
             }
