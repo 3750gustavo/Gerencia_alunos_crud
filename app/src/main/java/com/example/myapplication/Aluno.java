@@ -92,6 +92,7 @@ public class Aluno implements Serializable {
                 ", CPF: " + (cpf != null ? cpf : "") +
                 ", Telefone: " + (telefone != null ? telefone : "") +
                 ", Ativo: " + ativo +
-                ", Curso: " + (curso != null ? curso : "");
+                ", Curso: " + (curso != null ? curso : "") +
+                ", Valor do Pagamento: " + valorPagamento;
     }
 }
