@@ -42,7 +42,7 @@ O **Gerenciador de Alunos** é um aplicativo Android desenvolvido para gerenciar
 
 1. Clone o repositório:
    ```sh
-   git clone https://github.com/seu-usuario/gerenciador-de-alunos.git
+   git clone https://github.com/3750gustavo/Gerencia_alunos_crud.git
    ```
 2. Abra o projeto no Android Studio.
 3. Compile e execute o aplicativo em um emulador ou dispositivo físico.
