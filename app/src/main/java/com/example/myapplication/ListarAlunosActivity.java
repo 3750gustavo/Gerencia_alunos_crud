@@ -30,25 +30,19 @@ public class ListarAlunosActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alunos);
         listViewAlunos.setAdapter(adapter);
 
-        listViewAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Aluno aluno = (Aluno) parent.getItemAtPosition(position);
-                Intent intent = new Intent(ListarAlunosActivity.this, EditarAlunoActivity.class);
-                intent.putExtra("alunoId", aluno.getId());
-                startActivity(intent);
-            }
+        listViewAlunos.setOnItemClickListener((parent, view, position, id) -> {
+            Aluno aluno = (Aluno) parent.getItemAtPosition(position);
+            Intent intent = new Intent(ListarAlunosActivity.this, EditarAlunoActivity.class);
+            intent.putExtra("alunoId", aluno.getId());
+            startActivity(intent);
         });
 
-        listViewAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Aluno aluno = (Aluno) parent.getItemAtPosition(position);
-                Intent intent = new Intent(ListarAlunosActivity.this, ListarPagamentosActivity.class);
-                intent.putExtra("alunoId", aluno.getId());
-                startActivity(intent);
-                return true;
-            }
+        listViewAlunos.setOnItemLongClickListener((parent, view, position, id) -> {
+            Aluno aluno = (Aluno) parent.getItemAtPosition(position);
+            Intent intent = new Intent(ListarAlunosActivity.this, ListarPagamentosActivity.class);
+            intent.putExtra("alunoId", aluno.getId());
+            startActivity(intent);
+            return true;
         });
     }
 
