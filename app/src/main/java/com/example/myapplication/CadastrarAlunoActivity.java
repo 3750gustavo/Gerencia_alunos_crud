@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Date;
 import java.util.Objects;
 
 public class CadastrarAlunoActivity extends AppCompatActivity {
@@ -31,6 +32,8 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
     private EditText editTextNome;
     private EditText editTextCPF;
     private EditText editTextTelefone;
+    private EditText editTextValorPagamento;
+    private EditText editTextDataPagamento;
     private ImageView imageViewFoto;
     private CheckBox checkBoxAtivo;
     private RadioGroup radioGroupCurso;
@@ -43,6 +46,8 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
         editTextNome = findViewById(R.id.editTextNome);
         editTextCPF = findViewById(R.id.editTextCPF);
         editTextTelefone = findViewById(R.id.editTextTelefone);
+        editTextValorPagamento = findViewById(R.id.editTextValorPagamento);
+        editTextDataPagamento = findViewById(R.id.editTextDataPagamento);
         Button buttonCadastrar = findViewById(R.id.buttonCadastrar);
         Button buttonTirarFoto = findViewById(R.id.buttonTirarFoto);
         imageViewFoto = findViewById(R.id.imageViewFoto);
@@ -76,6 +81,15 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
                 Toast.makeText(CadastrarAlunoActivity.this, "Aluno com CPF ou telefone já cadastrado!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(CadastrarAlunoActivity.this, "Aluno cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+
+                // Insert payment if provided
+                if (!editTextValorPagamento.getText().toString().isEmpty() && !editTextDataPagamento.getText().toString().isEmpty()) {
+                    double valor = Double.parseDouble(editTextValorPagamento.getText().toString());
+                    Date data = new Date(editTextDataPagamento.getText().toString());
+                    Pagamento pagamento = new Pagamento((int) id, valor, data);
+                    PagamentoDao pagamentoDao = new PagamentoDao(CadastrarAlunoActivity.this);
+                    pagamentoDao.inserir(pagamento);
+                }
             }
         });
 
