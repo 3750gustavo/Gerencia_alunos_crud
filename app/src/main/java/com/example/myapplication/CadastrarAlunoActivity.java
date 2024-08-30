@@ -60,35 +60,37 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
         }
 
         buttonCadastrar.setOnClickListener(v -> {
-            String nome = editTextNome.getText().toString();
-            String cpf = editTextCPF.getText().toString();
-            String telefone = editTextTelefone.getText().toString();
-            boolean ativo = checkBoxAtivo.isChecked();
-            int selectedCursoId = radioGroupCurso.getCheckedRadioButtonId();
-            String curso = selectedCursoId == R.id.radioButtonGraduacao ? "Graduação" : "Pós-graduação";
+            if (validarCampos()) {
+                String nome = editTextNome.getText().toString();
+                String cpf = editTextCPF.getText().toString();
+                String telefone = editTextTelefone.getText().toString();
+                boolean ativo = checkBoxAtivo.isChecked();
+                int selectedCursoId = radioGroupCurso.getCheckedRadioButtonId();
+                String curso = selectedCursoId == R.id.radioButtonGraduacao ? "Graduação" : "Pós-graduação";
 
-            Aluno aluno = new Aluno(nome, cpf, telefone);
-            aluno.setAtivo(ativo);
-            aluno.setCurso(curso);
+                Aluno aluno = new Aluno(nome, cpf, telefone);
+                aluno.setAtivo(ativo);
+                aluno.setCurso(curso);
 
-            // Get the profile picture from the ImageView
-            Bitmap bitmap = ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
-            aluno.setFoto(getBytesFromBitmap(bitmap));
+                // Get the profile picture from the ImageView
+                Bitmap bitmap = ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
+                aluno.setFoto(getBytesFromBitmap(bitmap));
 
-            AlunoDao alunoDao = new AlunoDao(CadastrarAlunoActivity.this);
-            long id = alunoDao.inserir(aluno);
-            if (id == -1) {
-                Toast.makeText(CadastrarAlunoActivity.this, "Aluno com CPF ou telefone já cadastrado!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(CadastrarAlunoActivity.this, "Aluno cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                AlunoDao alunoDao = new AlunoDao(CadastrarAlunoActivity.this);
+                long id = alunoDao.inserir(aluno);
+                if (id == -1) {
+                    Toast.makeText(CadastrarAlunoActivity.this, "Aluno com CPF ou telefone já cadastrado!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CadastrarAlunoActivity.this, "Aluno cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
 
-                // Insert payment if provided
-                if (!editTextValorPagamento.getText().toString().isEmpty() && !editTextDataPagamento.getText().toString().isEmpty()) {
-                    double valor = Double.parseDouble(editTextValorPagamento.getText().toString());
-                    Date data = new Date(editTextDataPagamento.getText().toString());
-                    Pagamento pagamento = new Pagamento((int) id, valor, data);
-                    PagamentoDao pagamentoDao = new PagamentoDao(CadastrarAlunoActivity.this);
-                    pagamentoDao.inserir(pagamento);
+                    // Insert payment if provided
+                    if (!editTextValorPagamento.getText().toString().isEmpty() && !editTextDataPagamento.getText().toString().isEmpty()) {
+                        double valor = Double.parseDouble(editTextValorPagamento.getText().toString());
+                        Date data = new Date(editTextDataPagamento.getText().toString());
+                        Pagamento pagamento = new Pagamento((int) id, valor, data);
+                        PagamentoDao pagamentoDao = new PagamentoDao(CadastrarAlunoActivity.this);
+                        pagamentoDao.inserir(pagamento);
+                    }
                 }
             }
         });
@@ -127,5 +129,30 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
                 Toast.makeText(this, "Camera permission denied!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    // Method to validate input fields
+    private boolean validarCampos() {
+        if (editTextNome.getText().toString().isEmpty()) {
+            editTextNome.setError("Nome é obrigatório");
+            return false;
+        }
+        if (editTextCPF.getText().toString().isEmpty()) {
+            editTextCPF.setError("CPF é obrigatório");
+            return false;
+        }
+        if (editTextTelefone.getText().toString().isEmpty()) {
+            editTextTelefone.setError("Telefone é obrigatório");
+            return false;
+        }
+        if (!editTextValorPagamento.getText().toString().isEmpty() && !editTextDataPagamento.getText().toString().isEmpty()) {
+            try {
+                Double.parseDouble(editTextValorPagamento.getText().toString());
+            } catch (NumberFormatException e) {
+                editTextValorPagamento.setError("Valor do pagamento inválido");
+                return false;
+            }
+        }
+        return true;
     }
 }
