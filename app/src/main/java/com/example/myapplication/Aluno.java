@@ -13,6 +13,7 @@ public class Aluno implements Serializable {
     private byte[] foto; // New field to store the profile picture
     private boolean ativo; // New field to store active status
     private String curso; // New field to store course type
+    private double valorPagamento;
 
     public Aluno(String nome, String cpf, String telefone) {
         this.nome = nome;
@@ -74,6 +75,14 @@ public class Aluno implements Serializable {
 
     public void setCurso(String curso) {
         this.curso = curso;
+    }
+
+    public double getValorPagamento() {
+        return valorPagamento;
+    }
+
+    public void setValorPagamento(double valorPagamento) {
+        this.valorPagamento = valorPagamento;
     }
 
     @NonNull
