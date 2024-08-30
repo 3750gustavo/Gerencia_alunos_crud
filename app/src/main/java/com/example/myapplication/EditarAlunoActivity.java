@@ -11,13 +11,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 
 public class EditarAlunoActivity extends AppCompatActivity {
 
@@ -115,7 +115,7 @@ public class EditarAlunoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            Bitmap bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
             imageViewFoto.setImageBitmap(bitmap);
         }
     }
