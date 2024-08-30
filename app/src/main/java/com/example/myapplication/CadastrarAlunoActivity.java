@@ -19,11 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.util.Locale;
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CadastrarAlunoActivity extends AppCompatActivity {
@@ -66,11 +66,12 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
                 String nome = editTextNome.getText().toString();
                 String cpf = editTextCPF.getText().toString();
                 String telefone = editTextTelefone.getText().toString();
+                double valorPagamento = Double.parseDouble(editTextValorPagamento.getText().toString());
                 boolean ativo = checkBoxAtivo.isChecked();
                 int selectedCursoId = radioGroupCurso.getCheckedRadioButtonId();
                 String curso = selectedCursoId == R.id.radioButtonGraduacao ? "Graduação" : "Pós-graduação";
 
-                Aluno aluno = new Aluno(nome, cpf, telefone);
+                Aluno aluno = new Aluno(nome, cpf, telefone, valorPagamento);
                 aluno.setAtivo(ativo);
                 aluno.setCurso(curso);
 
@@ -86,12 +87,11 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
                     Toast.makeText(CadastrarAlunoActivity.this, "Aluno cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
 
                     // Insert payment if provided
-                    if (!editTextValorPagamento.getText().toString().isEmpty() && !editTextDataPagamento.getText().toString().isEmpty()) {
-                        double valor = Double.parseDouble(editTextValorPagamento.getText().toString());
+                    if (!editTextDataPagamento.getText().toString().isEmpty()) {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR"));
                         try {
                             Date data = simpleDateFormat.parse(editTextDataPagamento.getText().toString());
-                            Pagamento pagamento = new Pagamento((int) id, valor, data);
+                            Pagamento pagamento = new Pagamento((int) id, valorPagamento, data);
                             PagamentoDao pagamentoDao = new PagamentoDao(CadastrarAlunoActivity.this);
                             pagamentoDao.inserir(pagamento);
                         } catch (ParseException e) {
@@ -153,13 +153,15 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
             editTextTelefone.setError("Telefone é obrigatório");
             return false;
         }
-        if (!editTextValorPagamento.getText().toString().isEmpty() && !editTextDataPagamento.getText().toString().isEmpty()) {
-            try {
-                Double.parseDouble(editTextValorPagamento.getText().toString());
-            } catch (NumberFormatException e) {
-                editTextValorPagamento.setError("Valor do pagamento inválido");
-                return false;
-            }
+        if (editTextValorPagamento.getText().toString().isEmpty()) {
+            editTextValorPagamento.setError("Valor do pagamento é obrigatório");
+            return false;
+        }
+        try {
+            Double.parseDouble(editTextValorPagamento.getText().toString());
+        } catch (NumberFormatException e) {
+            editTextValorPagamento.setError("Valor do pagamento inválido");
+            return false;
         }
         return true;
     }
