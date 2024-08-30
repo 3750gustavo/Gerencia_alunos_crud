@@ -15,10 +15,11 @@ public class Aluno implements Serializable {
     private String curso; // New field to store course type
     private double valorPagamento;
 
-    public Aluno(String nome, String cpf, String telefone, double aDouble) {
+    public Aluno(String nome, String cpf, String telefone, double valorPagamento) {
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
+        this.valorPagamento = valorPagamento;
     }
 
     public int getId() {
