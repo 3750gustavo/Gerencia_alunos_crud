@@ -19,6 +19,20 @@ public class PagamentoDao {
         db = conexao.getWritableDatabase();
     }
 
+    public Pagamento getPagamento(int id) {
+        String[] colunas = {"id", "alunoId", "valor", "data"};
+        String selection = "id = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor cursor = db.query("pagamentos", colunas, selection, selectionArgs, null, null, null);
+        Pagamento pagamento = null;
+        if (cursor.moveToFirst()) {
+            pagamento = new Pagamento(cursor.getInt(1), cursor.getDouble(2), new Date(cursor.getLong(3)));
+            pagamento.setId(cursor.getInt(0));
+        }
+        cursor.close();
+        return pagamento;
+    }
+
     public long inserir(Pagamento pagamento) {
         ContentValues values = new ContentValues();
         values.put("alunoId", pagamento.getAlunoId());

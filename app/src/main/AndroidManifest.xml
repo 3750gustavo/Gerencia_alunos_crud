@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Android Permissions Goes here, feel free to add more in the future here -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -30,6 +34,7 @@
         <activity android:name=".ListarAlunosActivity" />
         <activity android:name=".EditarAlunoActivity" />
         <activity android:name=".ListarPagamentosActivity" />
+        <activity android:name=".EditarPagamentoActivity" />
 
     </application>
 

@@ -1,6 +1,7 @@
 // app\src\main\java\com\example\myapplication\ListarPagamentosActivity.java
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -29,5 +30,12 @@ public class ListarPagamentosActivity extends AppCompatActivity {
             adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pagamentos);
             listViewPagamentos.setAdapter(adapter);
         }
+
+        listViewPagamentos.setOnItemClickListener((parent, view, position, id) -> {
+            Pagamento pagamento = (Pagamento) parent.getItemAtPosition(position);
+            Intent intent = new Intent(ListarPagamentosActivity.this, EditarPagamentoActivity.class);
+            intent.putExtra("pagamentoId", pagamento.getId());
+            startActivity(intent);
+        });
     }
 }
