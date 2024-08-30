@@ -29,6 +29,8 @@ public class AlunoDao {
         values.put("cpf", aluno.getCpf());
         values.put("telefone", aluno.getTelefone());
         values.put("foto", aluno.getFoto()); // Store the profile picture
+        values.put("ativo", aluno.isAtivo());
+        values.put("curso", aluno.getCurso());
 
         return db.insert("alunos", null, values);
     }
@@ -39,6 +41,8 @@ public class AlunoDao {
         values.put("cpf", aluno.getCpf());
         values.put("telefone", aluno.getTelefone());
         values.put("foto", aluno.getFoto()); // Store the profile picture
+        values.put("ativo", aluno.isAtivo());
+        values.put("curso", aluno.getCurso());
 
         String selection = "id = ?";
         String[] selectionArgs = {String.valueOf(aluno.getId())};
@@ -68,7 +72,7 @@ public class AlunoDao {
 
     public List<Aluno> listar() {
         List<Aluno> alunos = new ArrayList<>();
-        String[] colunas = {"id", "nome", "cpf", "telefone", "foto"};
+        String[] colunas = {"id", "nome", "cpf", "telefone", "foto", "ativo", "curso"};
         Cursor cursor = db.query("alunos", colunas, null, null, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -79,6 +83,8 @@ public class AlunoDao {
                 if (foto != null) {
                     aluno.setFoto(foto);
                 }
+                aluno.setAtivo(cursor.getInt(5) == 1);
+                aluno.setCurso(cursor.getString(6));
                 alunos.add(aluno);
             } while (cursor.moveToNext());
         }
@@ -93,7 +99,7 @@ public class AlunoDao {
     }
 
     public Aluno getAluno(int id) {
-        String[] colunas = {"id", "nome", "cpf", "telefone", "foto"};
+        String[] colunas = {"id", "nome", "cpf", "telefone", "foto", "ativo", "curso"};
         String selection = "id = ?";
         String[] selectionArgs = {String.valueOf(id)};
         Cursor cursor = db.query("alunos", colunas, selection, selectionArgs, null, null, null);
@@ -102,9 +108,10 @@ public class AlunoDao {
             aluno = new Aluno(cursor.getString(1), cursor.getString(2), cursor.getString(3));
             aluno.setId(cursor.getInt(0));
             aluno.setFoto(cursor.getBlob(4));
+            aluno.setAtivo(cursor.getInt(5) == 1);
+            aluno.setCurso(cursor.getString(6));
         }
         cursor.close();
         return aluno;
     }
-
 }

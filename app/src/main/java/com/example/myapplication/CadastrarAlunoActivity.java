@@ -8,8 +8,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +32,8 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
     private EditText editTextCPF;
     private EditText editTextTelefone;
     private ImageView imageViewFoto;
+    private CheckBox checkBoxAtivo;
+    private RadioGroup radioGroupCurso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
         Button buttonCadastrar = findViewById(R.id.buttonCadastrar);
         Button buttonTirarFoto = findViewById(R.id.buttonTirarFoto);
         imageViewFoto = findViewById(R.id.imageViewFoto);
+        checkBoxAtivo = findViewById(R.id.checkBoxAtivo);
+        radioGroupCurso = findViewById(R.id.radioGroupCurso);
 
         // Request camera permission if not already granted
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -51,7 +58,14 @@ public class CadastrarAlunoActivity extends AppCompatActivity {
             String nome = editTextNome.getText().toString();
             String cpf = editTextCPF.getText().toString();
             String telefone = editTextTelefone.getText().toString();
+            boolean ativo = checkBoxAtivo.isChecked();
+            int selectedCursoId = radioGroupCurso.getCheckedRadioButtonId();
+            String curso = selectedCursoId == R.id.radioButtonGraduacao ? "Graduação" : "Pós-graduação";
+
             Aluno aluno = new Aluno(nome, cpf, telefone);
+            aluno.setAtivo(ativo);
+            aluno.setCurso(curso);
+
             // Get the profile picture from the ImageView
             Bitmap bitmap = ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
             aluno.setFoto(getBytesFromBitmap(bitmap));

@@ -1,4 +1,4 @@
-//app\src\main\java\com\example\myapplication\Aluno.java
+// app\src\main\java\com\example\myapplication\Aluno.java
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
@@ -11,6 +11,8 @@ public class Aluno implements Serializable {
     private String cpf;
     private String telefone;
     private byte[] foto; // New field to store the profile picture
+    private boolean ativo; // New field to store active status
+    private String curso; // New field to store course type
 
     public Aluno(String nome, String cpf, String telefone) {
         this.nome = nome;
@@ -58,11 +60,29 @@ public class Aluno implements Serializable {
         this.foto = foto;
     }
 
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public String getCurso() {
+        return curso;
+    }
+
+    public void setCurso(String curso) {
+        this.curso = curso;
+    }
+
     @NonNull
     @Override
     public String toString() {
         return "Nome: " + (nome != null ? nome : "") +
-            ", CPF: " + (cpf != null ? cpf : "") +
-            ", Telefone: " + (telefone != null ? telefone : "");
+                ", CPF: " + (cpf != null ? cpf : "") +
+                ", Telefone: " + (telefone != null ? telefone : "") +
+                ", Ativo: " + ativo +
+                ", Curso: " + (curso != null ? curso : "");
     }
 }

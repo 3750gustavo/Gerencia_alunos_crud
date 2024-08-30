@@ -1,3 +1,4 @@
+// app\src\main\java\com\example\myapplication\EditarAlunoActivity.java
 package com.example.myapplication;
 
 import android.content.Intent;
@@ -6,10 +7,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +26,8 @@ public class EditarAlunoActivity extends AppCompatActivity {
     private EditText editTextTelefone;
     private ImageView imageViewFoto;
     private Button buttonTirarFoto;
+    private CheckBox checkBoxAtivo;
+    private RadioGroup radioGroupCurso;
 
     private Aluno aluno;
     private AlunoDao alunoDao;
@@ -39,6 +44,8 @@ public class EditarAlunoActivity extends AppCompatActivity {
         Button buttonExcluir = findViewById(R.id.buttonExcluir);
         buttonTirarFoto = findViewById(R.id.buttonTirarFoto);
         imageViewFoto = findViewById(R.id.imageViewFoto);
+        checkBoxAtivo = findViewById(R.id.checkBoxAtivo);
+        radioGroupCurso = findViewById(R.id.radioGroupCurso);
 
         alunoDao = new AlunoDao(this);
 
@@ -49,6 +56,12 @@ public class EditarAlunoActivity extends AppCompatActivity {
                 editTextNome.setText(aluno.getNome());
                 editTextCPF.setText(aluno.getCpf());
                 editTextTelefone.setText(aluno.getTelefone());
+                checkBoxAtivo.setChecked(aluno.isAtivo());
+                if (aluno.getCurso().equals("Graduação")) {
+                    radioGroupCurso.check(R.id.radioButtonGraduacao);
+                } else {
+                    radioGroupCurso.check(R.id.radioButtonPosGraduacao);
+                }
             }
         }
 
@@ -67,6 +80,10 @@ public class EditarAlunoActivity extends AppCompatActivity {
                 aluno.setNome(editTextNome.getText().toString());
                 aluno.setCpf(editTextCPF.getText().toString());
                 aluno.setTelefone(editTextTelefone.getText().toString());
+                aluno.setAtivo(checkBoxAtivo.isChecked());
+                int selectedCursoId = radioGroupCurso.getCheckedRadioButtonId();
+                String curso = selectedCursoId == R.id.radioButtonGraduacao ? "Graduação" : "Pós-graduação";
+                aluno.setCurso(curso);
 
                 Bitmap bitmap = ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
                 aluno.setFoto(getBytesFromBitmap(bitmap));

@@ -68,6 +68,33 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/checkBoxAtivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ativo"
+            android:layout_marginTop="16dp"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupCurso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <RadioButton
+                android:id="@+id/radioButtonGraduacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Graduação"/>
+
+            <RadioButton
+                android:id="@+id/radioButtonPosGraduacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pós-graduação"/>
+
+        </RadioGroup>
+
         <ImageView
             android:id="@+id/imageViewFoto"
             android:layout_width="match_parent"
