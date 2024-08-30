@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Conexao extends SQLiteOpenHelper {
     private static final String NOME_BANCO = "banco_alunos.db";
-    private static final int VERSAO_BANCO = 2;
+    private static final int VERSAO_BANCO = 3; // Increment version to trigger onUpgrade
 
     public Conexao(Context context) {
         super(context, NOME_BANCO, null, VERSAO_BANCO);
@@ -22,7 +22,8 @@ public class Conexao extends SQLiteOpenHelper {
                 "telefone TEXT NOT NULL," +
                 "foto BLOB," +
                 "ativo INTEGER," +
-                "curso TEXT)";
+                "curso TEXT," +
+                "valorPagamento REAL)"; // New field for payment value
         db.execSQL(sqlAlunos);
 
         String sqlPagamentos = "CREATE TABLE pagamentos (" +
@@ -36,12 +37,9 @@ public class Conexao extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sqlDropAlunos = "DROP TABLE IF EXISTS alunos";
-        db.execSQL(sqlDropAlunos);
-
-        String sqlDropPagamentos = "DROP TABLE IF EXISTS pagamentos";
-        db.execSQL(sqlDropPagamentos);
-
-        onCreate(db);
+        if (oldVersion < 3) {
+            String sqlAddValorPagamento = "ALTER TABLE alunos ADD COLUMN valorPagamento REAL";
+            db.execSQL(sqlAddValorPagamento);
+        }
     }
 }
