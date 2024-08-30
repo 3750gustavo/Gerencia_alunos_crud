@@ -31,6 +31,7 @@ public class AlunoDao {
         values.put("foto", aluno.getFoto()); // Store the profile picture
         values.put("ativo", aluno.isAtivo());
         values.put("curso", aluno.getCurso());
+        values.put("valorPagamento", aluno.getValorPagamento()); // Store the payment value
 
         return db.insert("alunos", null, values);
     }
@@ -43,6 +44,7 @@ public class AlunoDao {
         values.put("foto", aluno.getFoto()); // Store the profile picture
         values.put("ativo", aluno.isAtivo());
         values.put("curso", aluno.getCurso());
+        values.put("valorPagamento", aluno.getValorPagamento()); // Store the payment value
 
         String selection = "id = ?";
         String[] selectionArgs = {String.valueOf(aluno.getId())};
@@ -72,12 +74,12 @@ public class AlunoDao {
 
     public List<Aluno> listar() {
         List<Aluno> alunos = new ArrayList<>();
-        String[] colunas = {"id", "nome", "cpf", "telefone", "foto", "ativo", "curso"};
+        String[] colunas = {"id", "nome", "cpf", "telefone", "foto", "ativo", "curso", "valorPagamento"};
         Cursor cursor = db.query("alunos", colunas, null, null, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                Aluno aluno = new Aluno(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                Aluno aluno = new Aluno(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(7));
                 aluno.setId(cursor.getInt(0));
                 byte[] foto = cursor.getBlob(4);
                 if (foto != null) {
@@ -99,13 +101,13 @@ public class AlunoDao {
     }
 
     public Aluno getAluno(int id) {
-        String[] colunas = {"id", "nome", "cpf", "telefone", "foto", "ativo", "curso"};
+        String[] colunas = {"id", "nome", "cpf", "telefone", "foto", "ativo", "curso", "valorPagamento"};
         String selection = "id = ?";
         String[] selectionArgs = {String.valueOf(id)};
         Cursor cursor = db.query("alunos", colunas, selection, selectionArgs, null, null, null);
         Aluno aluno = null;
         if (cursor.moveToFirst()) {
-            aluno = new Aluno(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            aluno = new Aluno(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(7));
             aluno.setId(cursor.getInt(0));
             aluno.setFoto(cursor.getBlob(4));
             aluno.setAtivo(cursor.getInt(5) == 1);
