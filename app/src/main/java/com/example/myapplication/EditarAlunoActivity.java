@@ -24,6 +24,7 @@ public class EditarAlunoActivity extends AppCompatActivity {
     private EditText editTextNome;
     private EditText editTextCPF;
     private EditText editTextTelefone;
+    private EditText editTextValorPagamento; // New field for payment value
     private ImageView imageViewFoto;
     private Button buttonTirarFoto;
     private CheckBox checkBoxAtivo;
@@ -40,6 +41,7 @@ public class EditarAlunoActivity extends AppCompatActivity {
         editTextNome = findViewById(R.id.editTextNome);
         editTextCPF = findViewById(R.id.editTextCPF);
         editTextTelefone = findViewById(R.id.editTextTelefone);
+        editTextValorPagamento = findViewById(R.id.editTextValorPagamento); // Initialize new field
         Button buttonSalvar = findViewById(R.id.buttonSalvar);
         Button buttonExcluir = findViewById(R.id.buttonExcluir);
         buttonTirarFoto = findViewById(R.id.buttonTirarFoto);
@@ -56,6 +58,7 @@ public class EditarAlunoActivity extends AppCompatActivity {
                 editTextNome.setText(aluno.getNome());
                 editTextCPF.setText(aluno.getCpf());
                 editTextTelefone.setText(aluno.getTelefone());
+                editTextValorPagamento.setText(String.valueOf(aluno.getValorPagamento())); // Set payment value
                 checkBoxAtivo.setChecked(aluno.isAtivo());
                 if (aluno.getCurso().equals("Graduação")) {
                     radioGroupCurso.check(R.id.radioButtonGraduacao);
@@ -80,6 +83,7 @@ public class EditarAlunoActivity extends AppCompatActivity {
                 aluno.setNome(editTextNome.getText().toString());
                 aluno.setCpf(editTextCPF.getText().toString());
                 aluno.setTelefone(editTextTelefone.getText().toString());
+                aluno.setValorPagamento(Double.parseDouble(editTextValorPagamento.getText().toString())); // Capture new payment value
                 aluno.setAtivo(checkBoxAtivo.isChecked());
                 int selectedCursoId = radioGroupCurso.getCheckedRadioButtonId();
                 String curso = selectedCursoId == R.id.radioButtonGraduacao ? "Graduação" : "Pós-graduação";
